@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ora Home</title>
+  <link rel="stylesheet" href="home.css">
+  <link rel="icon" href="/ora.png">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Header with Logo -->
+  <header class="header">
+    <div class="logo">
+      <a href="index.html"><img src="/ora.png" alt="Logo" width="60px"></a>
+    </div>
+  </header>
+
+  <!-- Main container -->
+  <main class="container">
+    <!-- Create File Section -->
+    <section class="create-file">
+      <button id="createFileBtn">
+        <i class="fas fa-file"></i> Create New File
+      </button>
+    </section>
+
+    <!-- Recents Section -->
+    <section class="recents">
+      <h2>Recents</h2>
+      <div id="recentsContainer">
+        <!-- Saved file entries will be added here dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <script src="home.js"></script>
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(() => console.log("Service Worker Registered"));
+    }
+</script>
+</body>
+</html>

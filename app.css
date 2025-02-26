@@ -1,0 +1,595 @@
+/* Root Variables */
+:root {
+  --primary-color: #222;
+  --secondary-color: #f8f9fa;
+  --accent-color: #ff6b6b;
+  --accent-hover: #ff0ace;
+  --white: #ffffff;
+  --border-radius: 12px;
+  --transition: all 0.3s ease-in-out;
+  --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+ *{
+  padding: 0;
+  margin: 0;
+ }
+/* Global Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent-color);
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* Buttons */
+button {
+  padding: 5px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  background: #ff6b;
+  border: none;
+  color: var(--white);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+button:hover {
+ color: yellowgreen;
+}
+
+input{
+  border-radius: 50%;
+  padding: 5px 5px;
+}
+
+/* Home Container */
+.home-container {
+  padding: 50px;
+}
+
+/* Editor Styles */
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Editor Header */
+.editor-header {
+  display: flex;
+  justify-content: space-between; /* Left aur right ke elements ko alag karo */
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: var(--white);
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow);
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Tool Kit */
+.tool-kit {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+/* Tool Kit Buttons */
+.editor-header button {
+  background: none;
+  border: none;
+  padding: 8px 14px;
+  font-size: 18px;
+  color: var(--white);
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+}
+
+.editor-header button:hover{
+  background: #ddd;
+  color: #222;
+}
+
+.tool-kit button:hover {
+  background: white;
+  color: black;
+  transform: translateY(-2px);
+}
+
+/* Tool Kit Icons */
+.tool-kit button i {
+  font-size: 16px;
+}
+
+
+.content {
+
+/* ✅ Logo Left Side */
+.header-logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* ✅ Navigation & Icons Right Side */
+.header-nav {
+  display: flex;
+  gap: 15px;
+}
+
+.header-nav button {
+  background: var(--accent-color);
+  border: none;
+  padding: 8px 15px;
+  color: var(--white);
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+}
+
+.header-nav button:hover {
+  background: var(--accent-hover);
+}
+
+
+  width: calc(100% - 2px); /* Sidebar adjust */
+  height: 10%; /* Header ke height ka adjust */
+  margin: 20px auto 0;
+  padding: 20px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: auto;
+  position: relative;
+  left: 220px; /* Sidebar ke baad start hoga */
+}
+
+/* Formatting Toolbar */
+.format-toolbar {
+  background: linear-gradient(90deg, #ff4000, #ec2805, #ff00f7);
+  color: var(--white);
+  padding: 10px 20px;
+  width: 100%;
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+/* Parent container for all selectors & inputs */
+.format-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between items */
+  padding: 5px;
+  background: linear-gradient(45deg, #ff4500, #ff1493); /* Gradient background */
+  border-radius: 10px;
+  width: fit-content;
+}
+
+/* Styling for dropdowns & color input */
+select, input[type="color"] {
+  padding: 5px 8px;
+  border: 2px solid #ff8c00; /* Dark orange border */
+  border-radius: 6px;
+  background-color: white;
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  height: 30px;
+}
+
+/* Hover effect */
+select:hover, input[type="color"]:hover {
+  border-color: #ff1493; /* Pink border on hover */
+  box-shadow: 0px 0px 5px rgba(255, 20, 147, 0.5);
+}
+
+/* Focus effect */
+select:focus, input[type="color"]:focus {
+  border-color: #ff8c00; /* Dark orange */
+  box-shadow: 0px 0px 8px rgba(255, 140, 0, 0.6);
+}
+
+/* Color picker specific styling */
+input[type="color"] {
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Dropdown arrow styling */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="14" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  padding-right: 22px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .format-toolbar {
+      flex-wrap: wrap; /* If not enough space, wrap elements */
+      justify-content: center;
+  }
+  select, input[type="color"] {
+      font-size: 14px;
+  }
+}
+
+
+/* Workspace */
+.workspace {
+  display: flex;
+  padding-top: 40px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  height: calc(100vh - 90px); /* Header ko adjust karte hue full height */
+  background: var(--secondary-color);
+  padding: 10px;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  position: fixed;
+  left: 0;
+  top: 70px;/* Header ke neeche set */
+}
+
+.sidebar:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Editor */
+#editor {
+  display: flex;
+  flex-direction: column;
+  align-items: left; /* Center horizontally */
+  justify-content: flex-start; /* Content start from top */
+  text-align: center; /* Text ko bhi center mein rakhne ke liye */
+  padding: 10px;
+  min-height: 300px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow-y: auto;
+}
+
+#alignToggle {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.editor[style*="text-align: left"] { direction: ltr; }
+.editor[style*="text-align: right"] { direction: rtl; }
+
+
+/* Media Elements */
+.editor img, .editor video {
+  cursor: pointer;
+  max-width: 60%;
+  display: block;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  margin: 10px auto; /* Auto margin for centering */
+}
+
+.editor img:hover, .editor video:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow);
+}
+
+/* Options Menu */
+.options-menu {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.options-menu button, 
+.options-menu input {
+  padding: 5px;
+  color: white;
+  background: #ff6b6b;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.options-menu button:hover {
+  background: #ff0ace;
+}
+
+.options-menu input {
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.mediaContainer{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  border: 2px solid black
+} 
+
+/* Upload Media Container */
+.upload-container {
+  text-align: center;
+}
+
+.upload-icon {
+  display: inline-block;
+  font-size: 24px;
+  background: var(--accent-color);
+  color: white;
+  padding: 2px 20px;
+  border-radius: 20px 20px 0 0 ;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+
+.upload-icon:hover {
+  background: var(--accent-hover);
+  transform: scale(1.1);
+}
+/* Media Items */
+.side-media-item {
+  position: relative;
+  width: 100%;
+  cursor: grab;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  margin-bottom: 0px;
+  box-shadow: var(--shadow);
+  display: block;
+  border: 1px solid black;
+}
+
+.side-media-item img, .side-media-item video {
+  width: 100%;
+  border-radius: var(--border-radius);
+}
+
+.side-media-item:hover {
+  box-shadow: var(--shadow);
+}
+
+
+/* Delete Icon */
+.remove-icon {
+  display: inline-block;
+  font-size: 16px;
+  background: var(--accent-color);
+  color: white;
+  padding: 5px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  transition: var(--transition);
+ margin-top: 0px;
+ margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.remove-icon:hover {
+  font-size: 20px;
+}
+.insert-icon{
+  display: inline-block;
+  left: 200px;
+  font-size: 16px;
+  background: var(--accent-color);
+  color: white;
+  padding: 5px;
+  border-radius: 20px 0 0 20px;
+  cursor: pointer;
+  margin-top: 0px;
+ margin-bottom: 20px;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.insert-icon:hover {
+  background: var(--accent-hover);
+  font-size: 20px;
+}
+/* Recents Section */
+.recents-container {
+  padding: 20px;
+}
+
+.recents-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recents-list li {
+  position: relative;
+  margin: 12px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.recents-list li:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Icons */
+.icons {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.recents-list li:hover .icons {
+  display: flex;
+  gap: 5px;
+}
+
+/* Upload Container */
+.input-btn{
+  border-radius: 10px;
+
+}
+
+.draggable {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.content{
+  width: 82vw;
+  height: 100vh;
+}
+
+.editor a {
+  color: blue !important;
+  cursor: pointer;
+  text-decoration: underline; /* Optional: shows underline on links */
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+  .sidebar {
+      width: 150px; /* Chota sidebar */
+      font-size: 14px; /* Choti text size */
+      padding: 5px; /* Kam padding */
+  }
+
+  .sidebar .input-btn, 
+  .sidebar input {
+      font-size: 12px; /* Button aur input chote */
+      padding: 5px 8px;
+      top: 40px;
+  }
+
+  .media-item {
+      max-width: 100px; /* Media item bhi choti */
+  }
+
+  .toggle-btn {
+      font-size: 18px; /* Thoda chota toggle button */
+      padding: 8px 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+  *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .workspace{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+  }
+  .sidebar{
+    width: 30vw;
+    height: 100vh;
+    padding: 10px;
+    top: 40px;
+  }
+
+  .content{
+    height: 100%;
+    width: 100vw;
+    left: 130px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .insert-btn {
+      display: none; /* Hide button on desktop */
+  }
+}
+
+
+/* Responsive Styling */
+@media screen and (max-width: 768px) {
+  .tool-kit {
+      gap: 8px;
+      justify-content: center;
+  }
+
+  .tool-kit button {
+      font-size: 12px;
+      padding: 6px 10px;
+  }
+}
+
+/* Mobile View */
+@media screen and (max-width: 768px) {
+  .insert-icon {
+      display: block; /* Show Insert Icon only on Mobile */
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .insert-icon {
+      display: none; /* Hide Insert Icon on Desktop */
+  }
+}

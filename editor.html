@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ora-Editor</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="icon" href="/ora.png">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="editor-container">
+        <div class="editor-header">
+            <div class="logo">
+                <a href="index.html"><img src="/ora.png" alt="Logo" width="60px"></a>
+            </div>
+            <div class="toolbar">
+                <button id="homeButton"><i class="fas fa-home"></i></button>   
+                <button id="saveButton"><i class="fas fa-save"></i></button>           
+                <button onclick="downloadOraFile()"><i class="fas fa-download"></i></button>
+                <button id="openOraFileButton"><i class="fas fa-folder-open"></i></button>
+                <input type="file" id="fileInput" accept=".Ora" style="display: none;">
+            </div>
+        </div>
+        <div class="workspace">
+            <div class="sidebar">
+                <div class="input-btn">
+                    <input type="file" id="uploadMedia" accept="image/*,video/*" onchange="addMedia(event)" hidden>
+                    <label for="uploadMedia" class="upload-icon"><i class="fas fa-upload"></i></label>
+                </div>
+                <h3>Media</h3>
+                <div id="mediaContainer"></div>
+            </div>
+            <div class="content">
+                <div class="format-toolbar">
+                    <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+                    <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+                    <button onclick="formatText('underline')"><i class="fas fa-underline"></i></button>
+                    <button onclick="toggleCase()"><i class="fas fa-text-height"></i></button>
+                    <button id="alignToggle"><i class="fas fa-align-left"></i></button>
+                    <input type="color" id="textColorPicker" onchange="changeTextColor(this.value)">
+                     <!-- Heading Selection Dropdown -->
+                     <select onchange="formatText('heading', this.value)">
+                      <option value="p">Paragraph</option>
+                      <option value="h3">Heading 3</option>
+                      <option value="h2">Heading 2</option>
+                      <option value="h1">Heading 1</option>
+                  </select>
+                  <select onchange="formatText('fontsize', this.value)">
+                      <!-- Options from 0px to 24px -->
+                      <option value="1px">1px</option>
+                      <option value="2px">2px</option>
+                      <option value="3px">3px</option>
+                      <option value="4px">4px</option>
+                      <option value="5px">5px</option>
+                      <option value="6px">6px</option>
+                      <option value="7px">7px</option>
+                      <option value="8px">8px</option>
+                      <option value="9px">9px</option>
+                      <option value="10px">10px</option>
+                      <option value="12px">12px</option>
+                      <option value="14px">14px</option>
+                      <option value="16px" selected>16px</option>
+                      <option value="18px">18px</option>
+                      <option value="20px">20px</option>
+                      <option value="22px">22px</option>
+                      <option value="24px">24px</option>
+                  </select>
+                  <select onchange="formatText('fontname', this.value)">
+                      <option value="Arial">Arial</option>
+                      <option value="Verdana">Verdana</option>
+                      <option value="Times New Roman">Times New Roman</option>
+                      <option value="Courier New">Courier New</option>
+                      <option value="Georgia">Georgia</option>
+                      <option value="Tahoma">Tahoma</option>
+                      <option value="Trebuchet MS">Trebuchet MS</option>
+                      <option value="Impact">Impact</option>
+                      <option value="Comic Sans MS">Comic Sans MS</option>
+                      <option value="Lucida Sans">Lucida Sans</option>
+                      <option value="Palatino Linotype">Palatino Linotype</option>
+                      <option value="Garamond">Garamond</option>
+                      <option value="Bookman Old Style">Bookman Old Style</option>
+                      <option value="Arial Black">Arial Black</option>
+                      <option value="Century Gothic">Century Gothic</option>
+                      <option value="Franklin Gothic Medium">Franklin Gothic Medium</option>
+                      <option value="Calibri">Calibri</option>
+                      <option value="Cambria">Cambria</option>
+                      <option value="Futura">Futura</option>
+                      <option value="Geneva">Geneva</option>
+                      <option value="Rockwell">Rockwell</option>
+                      <option value="Monaco">Monaco</option>
+                      <option value="Copperplate">Copperplate</option>
+                      <option value="Brush Script MT">Brush Script MT</option>
+                      <option value="Baskerville">Baskerville</option>
+                      <option value="Didot">Didot</option>
+                      <option value="Lucida Console">Lucida Console</option>
+                      <option value="Perpetua">Perpetua</option>
+                      <option value="MS Sans Serif">MS Sans Serif</option>
+                      <option value="MS Serif">MS Serif</option>
+                      <option value="Gill Sans">Gill Sans</option>
+                      <option value="Segoe UI">Segoe UI</option>
+                      <option value="Optima">Optima</option>
+                      <option value="Goudy Old Style">Goudy Old Style</option>
+                      <option value="Charcoal">Charcoal</option>
+                      <option value="Zapf Chancery">Zapf Chancery</option>
+                      <option value="Serif">Serif</option>
+                      <option value="Sans-serif">Sans-serif</option>
+                      <option value="Fantasy">Fantasy</option>
+                      <option value="Cursive">Cursive</option>
+                      <option value="Algerian">Algerian</option>
+                      <option value="Berlin Sans FB">Berlin Sans FB</option>
+                      <option value="Broadway">Broadway</option>
+                      <option value="Castellar">Castellar</option>
+                      <option value="Century Schoolbook">Century Schoolbook</option>
+                      <option value="Engravers MT">Engravers MT</option>
+                      <option value="Eras Bold ITC">Eras Bold ITC</option>
+                      <option value="Footlight MT Light">Footlight MT Light</option>
+                      <option value="Harrington">Harrington</option>
+                      <option value="Jokerman">Jokerman</option>
+                      <option value="Kristen ITC">Kristen ITC</option>
+                      <option value="Magneto">Magneto</option>
+                      <option value="Matura MT Script Capitals">Matura MT Script Capitals</option>
+                      <option value="Old English Text MT">Old English Text MT</option>
+                      <option value="Papyrus">Papyrus</option>
+                      <option value="Playbill">Playbill</option>
+                      <option value="Ravie">Ravie</option>
+                      <option value="Showcard Gothic">Showcard Gothic</option>
+                      <option value="Snap ITC">Snap ITC</option>
+                      <option value="Stencil">Stencil</option>
+                      <option value="Viner Hand ITC">Viner Hand ITC</option>
+                      <option value="Vivaldi">Vivaldi</option>
+                      <option value="Vladimir Script">Vladimir Script</option>
+                  </select>
+                </div>
+                <div class="editor" id="editor" contenteditable="true"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="home.js"></script>
+    <script src="database.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log("Service Worker Registered"));
+        }
+    </script>
+    <script>
+// Save File
+document.getElementById("saveButton").addEventListener("click", function () {
+    const editorContent = document.getElementById("editor").innerHTML;
+    
+    if (!editorContent.trim()) {
+        alert("Cannot save an empty file!");
+        return;
+    }
+ 
+    let fileName = localStorage.getItem("currentFile") || prompt("Enter file name:", "example.Ora");
+    if (!fileName) return;
+    if (!fileName.endsWith(".Ora")) fileName += ".Ora";
+
+    // Save file content
+    if (fileName && editorContent) {
+      localStorage.setItem(fileName, editorContent);
+    } else {
+        alert("File name or content is missing!");
+    }
+
+    // Save to recent files list
+    let recents = JSON.parse(localStorage.getItem("recents")) || [];
+    
+    // Remove duplicate entries
+    recents = recents.filter(file => file.name !== fileName);
+    
+    // Add the new file with timestamp
+    recents.push({ name: fileName, timestamp: Date.now() });
+    localStorage.setItem("recents", JSON.stringify(recents));
+
+    alert("File saved successfully!");
+    
+    // Redirect to index.html
+    window.location.href = "index.html";
+});
+
+
+// Download File 
+function downloadOraFile() {
+    const editorContent = document.getElementById("editor").innerHTML;
+    if (!editorContent.trim()) {
+        alert("Cannot download an empty file!");
+        return;
+    }
+
+    let fileName = localStorage.getItem("currentFile") || prompt("Enter file name:", "example.Ora");
+    if (!fileName) return;
+
+    if (!fileName.endsWith(".Ora")) {
+        fileName += ".Ora";
+    }
+
+    const blob = new Blob([editorContent], { type: "application/octet-stream" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+
+// Load file content when editor.html is opened
+document.addEventListener("DOMContentLoaded", function () {
+    const editor = document.getElementById("editor");
+    const fileName = localStorage.getItem("currentFile"); // Get file name
+
+    if (!fileName) {
+        alert("No File Is Selected!");
+        return;
+    }
+
+    const content = localStorage.getItem(fileName); // File content get karo
+
+    if (content !== null) {
+        editor.innerHTML = content; // Editor main content show karo
+    } else {
+        alert("File not found!");
+    }
+});
+
+
+
+// Text Formatting
+function formatText(command, value = null) {
+    document.execCommand(command, false, value);
+}
+
+// Change Text Color
+function changeTextColor(color) {
+    document.execCommand('foreColor', false, color);
+}
+
+// Toggle Uppercase / Lowercase
+function toggleCase() {
+    let selection = window.getSelection().toString();
+    if (selection) {
+        let transformed = selection === selection.toUpperCase() ? selection.toLowerCase() : selection.toUpperCase();
+        document.execCommand('insertText', false, transformed);
+    }
+}
+
+// Drag & Drop Functionality
+const editor = document.getElementById("editor");
+
+editor.ondrop = (event) => {
+    event.preventDefault();
+    let file = event.dataTransfer.files[0];
+    handleFileDrop(file);
+};
+
+editor.ondragover = (event) => {
+    event.preventDefault();
+};
+document.getElementById('homeButton').addEventListener('click', function() {
+    window.location.href = "index.html";
+});
+
+    // Format Text Code
+    function formatText(command, value = null) {
+      if (command === 'heading') {
+        // For headings, use execCommand's formatBlock
+        document.execCommand('formatBlock', false, value);
+      } else if (command === 'fontsize') {
+        // Using execCommand for font size can be tricky.
+        // Here we set a default large size and then adjust its inline style.
+        document.execCommand('fontSize', false, "7");
+        let fontElements = document.getElementsByTagName("font");
+        for (let i = 0; i < fontElements.length; i++) {
+          if (fontElements[i].size === "7") {
+            fontElements[i].removeAttribute("size");
+            fontElements[i].style.fontSize = value;
+          }
+        }
+      } else if (command === 'fontname') {
+        document.execCommand('fontName', false, value);
+      } else {
+        document.execCommand(command, false, value);
+      }
+    }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+:root {
+    --primary-color: #333;
+    --secondary-color: #f4f4f4;
+    --accent-color: #ff6b6b;
+    --accent-hover: #ff0ace;
+    --white: #ffffff;
+    --border-radius: 20px;
+    --transition: all 0.3s ease;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+a{
+    text-decoration: none;
+    color: #ffffff;
+    transition: var(--transition);
+}
+
+.home-container {
+    padding: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    background: var(--accent-color);
+    border: none;
+    color: var(--white);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+  }
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+    
+.recents-container {
+    padding: 20px;
+}
+
+.recents-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.recents-list li {
+    position: relative;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button img {
+    width: 20px;
+    height: 20px;
+}
+
+
+.icons button:hover {
+    color: #007bff; /* Blue on hover
+}
+
+/* Editor Header */
+.editor-header {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: #333;
+    color: white;
+    height: 70px;
+    width: 100%;
+    position: fixed;
+
+}
+
+
+
+.toolbar{
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+    padding: 20px;
+    align-items: center;
+}
+
+.toolbar button{
+    background: #f58e8e;
+    border: none;
+    padding: 2px 4px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 50px;
+}
+.toolbar button:hover {
+    background: #ff0ace;
+}
+
+.tool-kit{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 20px;
+
+}
+
+.tool-kit button{
+    background: #ff6b6b;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 20px;
+}
+.tool-kit button:hover {
+    background: #ff0ace;
+}
+
+
+
+
+.workspace {
+    display: flex;
+    flex: 1;
+    padding-top: 90px;
+}
+
+.sidebar {
+    width: 200px;
+    background: #f4f4f4;
+    padding: 10px; 
+    box-shadow: var(--shadow);
+}
+
+.sidebar .input-btn {
+    background: #ff6b6b;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 20px;
+    font-size: small;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.sidebar input{
+    background: #ff6b6b;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 20px;
+    font-size: small;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.content{
+    border: 1px solid #ddd;
+   height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    display: inline-block;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+}
+
+.format-toolbar {
+    background: linear-gradient(90deg, #ff4000, #ec2805, #ff00f7);
+    color: white;
+    padding: 10px;
+    padding-top: 20px; 
+    display: flex;
+    width: 100%;
+    font-size: 5px;
+    gap: 2px;
+    justify-content: center;
+    align-items: center;
+}
+
+.format-toolbar select{
+    padding: 2px 10px;
+}
+
+.format-toolbar button, select, input {
+    background: #ff6b6b;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 20px;
+    font-size: small;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+ button:hover {
+    background: #ff0ace;
+}
+select:hover {
+    background: #ff0aca;
+}
+
+
+.editor {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    min-height: 90%;
+    width: 100%;
+    overflow: auto;
+    display: inline-block;
+    margin: 10px;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: none;
+}
+
+/* Media item inside the editor */
+.editor img, .editor video {
+    max-width: 80%;
+    display: inline-block;
+}
+.editor video {
+    max-width: 80%;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Hide options menu by default */
+.options-menu {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    top: 10px;  /* Adjust position */
+    left: 10px; /* Adjust position */
+}
+
+/* Style for the options buttons */
+.options-menu button {
+    display: block;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Show options menu when the media is clicked */
+.editor img:hover + .options-menu,
+.editor video:hover + .options-menu {
+    display: block;
+}
+
+
+.media-file {
+    max-width: 200px;
+    cursor: pointer;
+}
+
+#mediaContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 🎥 Media Items */
+.media-wrapper {
+    position: relative;
+}
+
+.media-item {
+    width: 100%;
+    max-width: 100%;
+    cursor: grab;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.media-item:hover {
+    transform: scale(1.05);
+}
+
+/* ❌ Remove Icon */
+.remove-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.options-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+/* Style for each button in the options menu */
+.options-menu button {
+    display: block;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+@media (max-width: 800px) {
+    .sidebar {
+        width: 150px; /* Chota sidebar */
+        font-size: 14px; /* Choti text size */
+        padding: 5px; /* Kam padding */
+    }
+
+    .sidebar .input-btn, 
+    .sidebar input {
+        font-size: 12px; /* Button aur input chote */
+        padding: 5px 8px;
+    }
+
+    .media-item {
+        max-width: 100px; /* Media item bhi choti */
+    }
+
+    .toggle-btn {
+        font-size: 18px; /* Thoda chota toggle button */
+        padding: 8px 12px;
+    }
+}
+
+.upload-container {
+    text-align: center;
+}
+
+.upload-icon {
+    display: inline-block;
+    font-size: 24px;
+    background: var(--accent-color);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.upload-icon:hover {
+    background: var(--accent-hover);
+    transform: scale(1.1);
+}}

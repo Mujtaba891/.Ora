@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ora Viewer</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="/ora.png">
+  <!-- Optional: Include Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+    /* Root Variables */
+:root {
+  --primary-color: #222;
+  --secondary-color: #f8f9fa;
+  --accent-color: #ff6b6b;
+  --accent-hover: #ff0ace;
+  --white: #ffffff;
+  --border-radius: 12px;
+  --transition: all 0.3s ease-in-out;
+  --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  line-height: 1.6;
+}
+
+/* Container for the viewer */
+.viewer-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+/* Header Style */
+.viewer-container h1 {
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+/* Styling for the viewer content */
+.viewer-content {
+  margin-bottom: 30px;
+  text-align: left;
+  padding: 20px;
+  border: 1px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-color);
+}
+
+/* Edit Button Style */
+.edit-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: var(--accent-color);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.edit-button:hover {
+  background-color: var(--accent-hover);
+}
+
+</style>
+<body>
+  <div class="viewer-container">
+    <h1>Ora File Viewer</h1>
+    <button id="editButton" class="edit-button">
+        <i class="fas fa-edit"></i> Edit File
+      </button>
+    <!-- This div displays the content of the .Ora file -->
+    <div id="viewer" class="viewer-content"></div>
+    <!-- Edit button to switch to editor mode -->
+  </div>
+
+  <script>
+     if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(() => console.log("Service Worker Registered"));
+    }
+
+/**
+ * -------------------------------
+ * Ora File Viewer Module
+ * -------------------------------
+ * This module handles the following:
+ * 1. Checks if a file is passed via URL parameters (e.g., when the OS launches your app as a file handler).
+ * 2. Loads the current Ora file from localStorage if no URL file is provided.
+ * 3. Provides a file input and drag & drop functionality for manual file selection.
+ * 4. Parses the .Ora file (assumed JSON format) and displays its content (text and media).
+ * 5. Sets up an Edit button to redirect to editor.html for editing the loaded file.
+ * 6. Implements error handling and debugging logs.
+ *
+ * Note: Ensure that your .Ora files are saved as JSON objects with keys such as "name", "content", "media", and "timestamp".
+ */
+
+ (function() {
+  'use strict';
+
+  // DOM Elements references
+  const viewerElement = document.getElementById('viewer');
+  const editButton = document.getElementById('editButton');
+  const fileInput = document.getElementById('fileInput'); // Optional: file input for manual file selection
+  const selectFileButton = document.getElementById('selectFileButton'); // Optional: a button to trigger file input
+  const refreshButton = document.getElementById('refreshButton'); // Optional: refresh the viewer
+
+  /**
+   * Utility function to display a message in the viewer area.
+   * @param {string} message - The message HTML to display.
+   */
+  function displayMessage(message) {
+    viewerElement.innerHTML = `<div class="message">${message}</div>`;
+  }
+
+  /**
+   * Parses the provided file data (string or object) and renders it into the viewer.
+   * The expected file format is a JSON object with the following keys:
+   * - name: string (file name)
+   * - content: string (HTML/text content)
+   * - media: string (HTML for media elements, optional)
+   * - timestamp: string (ISO date)
+   * @param {string|Object} fileData - The file data to parse and display.
+   */
+  function displayFile(fileData) {
+    if (!fileData) {
+      displayMessage("No file content available.");
+      return;
+    }
+    try {
+      // If fileData is a string, try parsing as JSON
+      const parsedFile = typeof fileData === "string" ? JSON.parse(fileData) : fileData;
+
+      // Build HTML to display file content
+      let html = '';
+      // File header with name and timestamp
+      html += `<div class="file-header">
+                  <h2 class="file-name">${parsedFile.name || "Unnamed File"}</h2>
+                  <div class="file-timestamp">
+                    <em>Saved on: ${parsedFile.timestamp ? new Date(parsedFile.timestamp).toLocaleString() : "Unknown"}</em>
+                  </div>
+                </div>`;
+      // File main content
+      html += `<div class="file-content">${parsedFile.content || "<p>No content available.</p>"}</div>`;
+      // If media exists, display it
+      if (parsedFile.media && parsedFile.media.trim() !== "") {
+        html += `<div class="file-media">${parsedFile.media}</div>`;
+      }
+      // Render into viewer element
+      viewerElement.innerHTML = html;
+      // Save current file into localStorage (so that the Edit page can load it)
+      localStorage.setItem('currentOra', JSON.stringify(parsedFile));
+      console.log("File loaded successfully:", parsedFile);
+    } catch (err) {
+      console.error("Error parsing file data:", err);
+      displayMessage("<p>Error loading file. Invalid file format.</p>");
+    }
+  }
+
+  /**
+   * Loads the current Ora file from localStorage.
+   */
+  function loadFileFromStorage() {
+    const storedFile = localStorage.getItem('currentOra');
+    if (storedFile) {
+      console.log("Loading file from localStorage.");
+      displayFile(storedFile);
+    } else {
+      displayMessage("No Ora file found in storage. Please select a file.");
+      console.log("No file found in localStorage.");
+    }
+  }
+
+  /**
+   * Handles file selection from file input or drag & drop.
+   * @param {File} file - The selected file.
+   */
+  function handleFile(file) {
+    if (!file) {
+      console.error("No file provided for processing.");
+      displayMessage("No file provided.");
+      return;
+    }
+    // Ensure the file has a .ora extension
+    if (!file.name.endsWith('.ora')) {
+      console.warn("Selected file is not an .Ora file.");
+      displayMessage("Please select a valid .Ora file.");
+      return;
+    }
+    // Use FileReader to read the file as text
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const fileContent = e.target.result;
+      console.log("File read successfully.");
+      displayFile(fileContent);
+    };
+    reader.onerror = function(e) {
+      console.error("Error reading file", e);
+      displayMessage("Error reading file.");
+    };
+    reader.readAsText(file);
+  }
+
+  /**
+   * Sets up the file input listener (if file input exists in the DOM).
+   */
+  function setupFileInput() {
+    if (fileInput) {
+      fileInput.addEventListener('change', function(event) {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+          console.log("File selected via file input:", selectedFile.name);
+          handleFile(selectedFile);
+        }
+      });
+    }
+  }
+
+  /**
+   * Sets up drag & drop functionality for the viewer area.
+   * Users can drag a file and drop it onto the viewer.
+   */
+  function setupDragAndDrop() {
+    // Use the viewer area as the drop zone
+    viewerElement.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      viewerElement.classList.add('drag-over');
+    });
+    viewerElement.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      viewerElement.classList.remove('drag-over');
+    });
+    viewerElement.addEventListener('drop', function(e) {
+      e.preventDefault();
+      viewerElement.classList.remove('drag-over');
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        console.log("File dropped:", e.dataTransfer.files[0].name);
+        handleFile(e.dataTransfer.files[0]);
+        e.dataTransfer.clearData();
+      }
+    });
+  }
+
+  /**
+   * Checks if a file is provided via URL parameters.
+   * Some platforms or file handlers might pass the file data via query parameters.
+   * For this example, we assume that if the URL has a 'file' parameter,
+   * it is a Base64 encoded string containing the file's content.
+   * @returns {boolean} - Returns true if a file was loaded from URL.
+   */
+  function checkURLForFile() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('file')) {
+      try {
+        const base64Content = params.get('file');
+        const decodedContent = atob(base64Content);
+        console.log("File data received from URL parameter.");
+        displayFile(decodedContent);
+        return true;
+      } catch (error) {
+        console.error("Error decoding file parameter:", error);
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Initialization function.
+   * This function checks if file data is passed via URL. If not, it falls back to localStorage.
+   * It also sets up file input and drag & drop functionality.
+   */
+  function initViewer() {
+    console.log("Initializing Ora Viewer...");
+    // First, check URL parameters for file data
+    if (!checkURLForFile()) {
+      // If no file from URL, attempt to load from localStorage
+      loadFileFromStorage();
+    }
+    // Setup file input (if available)
+    setupFileInput();
+    // Setup drag & drop area for the viewer element
+    setupDragAndDrop();
+  }
+
+  /**
+   * Setup the Edit button functionality.
+   * When clicked, it redirects the user to editor.html where the current file is loaded for editing.
+   */
+  function setupEditButton() {
+    if (editButton) {
+      editButton.addEventListener('click', function() {
+        console.log("Edit button clicked. Redirecting to editor.html");
+        window.location.href = 'editor.html';
+      });
+    } else {
+      console.error("Edit button not found in the DOM.");
+    }
+  }
+
+  /**
+   * Optionally, if there's a button to manually trigger file input (selectFileButton),
+   * attach an event listener to simulate a click on the hidden file input.
+   */
+  function setupSelectFileButton() {
+    if (selectFileButton && fileInput) {
+      selectFileButton.addEventListener('click', function() {
+        console.log("Select File button clicked. Triggering file input.");
+        fileInput.click();
+      });
+    }
+  }
+
+  /**
+   * Optional: Setup a refresh button to reload the file from localStorage.
+   */
+  function setupRefreshButton() {
+    if (refreshButton) {
+      refreshButton.addEventListener('click', function() {
+        console.log("Refresh button clicked. Reloading file from storage.");
+        loadFileFromStorage();
+      });
+    }
+  }
+
+  // Initialize the viewer and set up all event listeners
+  document.addEventListener("DOMContentLoaded", function() {
+    initViewer();
+    setupEditButton();
+    setupSelectFileButton();
+    setupRefreshButton();
+    console.log("Ora Viewer initialized at " + new Date().toLocaleTimeString());
+    console.log("Current localStorage file:", localStorage.getItem('currentOra'));
+  });
+
+  /**
+   * Optional: Listen to changes in localStorage and update the viewer if 'currentOra' is updated.
+   * This is useful if multiple tabs or actions are involved.
+   */
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'currentOra') {
+      console.log("Detected change in localStorage for 'currentOra'. Reloading file.");
+      loadFileFromStorage();
+    }
+  });
+})();
+
+  </script>
+</body>
+</html>
