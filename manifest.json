@@ -17,7 +17,7 @@
   ],
   "file_handlers": [
     {
-      "action": "/viewer.html",
+      "action": "/editor.html",
       "accept": {
         "application/x-ora": [".ora"]
       }
