@@ -1,47 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ora Home</title>
-  <link rel="stylesheet" href="home.css">
-  <link rel="icon" href="/ora.png">
-  <link rel="manifest" href="manifest.json">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ora Editor - Home</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="ora.png" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- Header with Logo -->
+  <!-- Header with Logo and Storage Icon -->
   <header class="header">
     <div class="logo">
-      <a href="index.html"><img src="/ora.png" alt="Logo" width="60px"></a>
+      <img src="ora.png" alt="" width="50" /> Ora Editor
+    </div>
+    <div class="storage-icon" id="storageIcon" title="Storage Usage">
+      <i class="fas fa-database"></i>
     </div>
   </header>
 
-  <!-- Main container -->
-  <main class="container">
-    <!-- Create File Section -->
-    <section class="create-file">
-      <button id="createFileBtn">
-        <i class="fas fa-file"></i> Create New File
-      </button>
-    </section>
-
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- When user clicks New File, our createFileModal will appear -->
+    <button class="new-file-btn" onclick="showCreateFileModal()">+ New File</button>
+    
     <!-- Recents Section -->
     <section class="recents">
-      <h2>Recents</h2>
-      <div id="recentsContainer">
-        <!-- Saved file entries will be added here dynamically -->
-      </div>
+      <h2>Recent Projects</h2>
+      <ul id="recent-list">
+        <!-- Recent files will be added here dynamically -->
+      </ul>
     </section>
   </main>
 
-  <script src="home.js"></script>
-  <script src="script.js"></script>
+  <!-- Create File Modal (for new file creation) -->
+  <div id="createFileModal" class="modal1">
+    <div class="modal-content1">
+      <h3>Create New File</h3>
+      <input type="text" id="newFileName" placeholder="Enter file name" />
+      <div class="modal-buttons">
+        <button id="createFileCancelBtn">Cancel</button>
+        <button id="createFileContinueBtn">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Storage Modal -->
+  <div id="storageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="storageModalClose">&times;</span>
+      <h2>Storage Usage</h2>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p id="storageText"></p>
+      <button id="clearStorageBtn" class="clear-storage-btn">
+        <i class="fas fa-trash"></i> Clear Storage
+      </button>
+    </div>
+  </div>
   <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-            .then(() => console.log("Service Worker Registered"));
+    // ---------- Projects Storage ----------
+    const FILES_KEY = "files";
+    function loadFiles() {
+      return JSON.parse(localStorage.getItem(FILES_KEY) || "[]");
     }
-</script>
+    function saveFiles(files) {
+      localStorage.setItem(FILES_KEY, JSON.stringify(files));
+    }
+    
+    //render recent 
+    function renderRecents() {
+  const recentList = document.getElementById("recent-list");
+  const files = loadFiles();
+  recentList.innerHTML = "";
+
+  if (files.length === 0) {
+    recentList.innerHTML = "<li>No recent files found.</li>";
+  } else {
+    // Sort files by date (newest first)
+    files.sort((a, b) => new Date(b.date) - new Date(a.date));
+    files.forEach(file => {
+      const li = document.createElement("li");
+      li.className = "recent-item";
+      li.innerHTML = `
+        <div class="file-info">
+          <span class="file-name">${file.name}</span>
+          <span class="file-date">${new Date(file.date).toLocaleString()}</span>
+        </div>
+        <div class="file-actions">
+          <i class="fas fa-edit" title="Edit" onclick="editFile('${file.id}')"></i>
+          <i class="fas fa-pen-square" title="Rename" onclick="renameFile('${file.id}')"></i>
+          <i class="fas fa-share-alt" title="Share" onclick="shareFile('${file.id}')"></i>
+          <i class="fas fa-trash-alt" title="Delete" onclick="deleteFile('${file.id}')"></i>
+        </div>
+      `;
+      recentList.appendChild(li);
+    });
+  }
+}
+
+//script for share button
+function shareFile(fileId) {
+  // Construct share link using current domain
+  const shareLink = window.location.origin + "/editor.html?file=" + encodeURIComponent(fileId);
+  
+  if (navigator.share) {
+    // Use the Web Share API if available
+    navigator.share({
+      title: "Ora Editor File",
+      text: "Check out this file on Ora Editor!",
+      url: shareLink
+    })
+    .then(() => console.log("File shared successfully"))
+    .catch(error => console.error("Error sharing:", error));
+  } else {
+    // Fallback: show a modal with social media icons
+    showShareModal(shareLink);
+  }
+}
+
+function showShareModal(link) {
+  // Create modal element
+  let modal = document.createElement("div");
+  modal.className = "share-modal";
+  modal.innerHTML = `
+    <div class="share-modal-content">
+      <span class="share-modal-close">&times;</span>
+      <h3>Share This File</h3>
+      <div class="share-icons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(link)}&text=Check%20this%20file%20on%20Ora%20Editor!" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(link)}" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:?subject=Check out this file&body=${encodeURIComponent(link)}" title="Share via Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Close modal on click of close icon
+  modal.querySelector(".share-modal-close").addEventListener("click", function() {
+    document.body.removeChild(modal);
+  });
+
+  // Also close modal if user clicks outside the modal content
+  modal.addEventListener("click", function(e) {
+    if (e.target === modal) {
+      document.body.removeChild(modal);
+    }
+  });
+}
+    
+    //create new file
+    function createNewFileWithName(name) {
+      const newFile = {
+        id: Date.now().toString(),
+        name: name,
+        content: "",
+        date: new Date().toISOString(),
+        size: 0
+      };
+      let files = loadFiles();
+      files.push(newFile);
+      saveFiles(files);
+      localStorage.setItem("currentFile", newFile.id);
+      // Redirect to editor page after creating file
+      window.location.href = "editor.html";
+    }
+    function editFile(fileId) {
+      localStorage.setItem("currentFile", fileId);
+      window.location.href = "editor.html";
+    }
+    function renameFile(fileId) {
+      let files = loadFiles();
+      const file = files.find(f => f.id === fileId);
+      if (file) {
+        const newName = prompt("Enter new name for the file:", file.name);
+        if (newName) {
+          file.name = newName;
+          file.date = new Date().toISOString();
+          saveFiles(files);
+          renderRecents();
+        }
+      }
+    }
+    function deleteFile(fileId) {
+      if (confirm("Are you sure you want to delete this file?")) {
+        let files = loadFiles();
+        files = files.filter(f => f.id !== fileId);
+        saveFiles(files);
+        renderRecents();
+        updateStorageInfo();
+      }
+    }
+
+    // ---------- Storage Modal Functions ----------
+    const TOTAL_STORAGE_MB = 10;
+    function openStorageModal() {
+      updateStorageInfo();
+      document.getElementById("storageModal").style.display = "block";
+    }
+    function closeStorageModal() {
+      document.getElementById("storageModal").style.display = "none";
+    }
+    function updateStorageInfo() {
+      let totalSizeBytes = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        totalSizeBytes += new Blob([value]).size;
+      }
+      const usedMB = (totalSizeBytes / (1024 * 1024)).toFixed(2);
+      const percentage = Math.min((totalSizeBytes / (TOTAL_STORAGE_MB * 1024 * 1024)) * 100, 100);
+      document.getElementById("progressBar").style.width = percentage + "%";
+      document.getElementById("storageText").innerText = `${usedMB} MB / ${TOTAL_STORAGE_MB} MB`;
+    }
+    function clearStorage() {
+      if (confirm("This will delete all saved files. Are you sure?")) {
+        localStorage.removeItem(FILES_KEY);
+        renderRecents();
+        updateStorageInfo();
+      }
+    }
+    document.addEventListener("DOMContentLoaded", renderRecents);
+    document.getElementById("storageIcon").addEventListener("click", openStorageModal);
+    document.getElementById("storageModalClose").addEventListener("click", closeStorageModal);
+    document.getElementById("clearStorageBtn").addEventListener("click", clearStorage);
+    window.onclick = function(event) {
+      const modal = document.getElementById("storageModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    // ---------- Create File Modal Functions ----------
+    function showCreateFileModal() {
+      document.getElementById("createFileModal").style.display = "block";
+    }
+    document.getElementById("createFileCancelBtn").addEventListener("click", function() {
+      document.getElementById("createFileModal").style.display = "none";
+    });
+    document.getElementById("createFileContinueBtn").addEventListener("click", function() {
+      const fileName = document.getElementById("newFileName").value.trim();
+      if (fileName) {
+        createNewFileWithName(fileName);
+      } else {
+        alert("Please enter a file name.");
+      }
+    });
+    window.addEventListener("click", function(event) {
+      const modal = document.getElementById("createFileModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>

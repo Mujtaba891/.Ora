@@ -1,293 +1,705 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ora-Editor</title>
-    <link rel="stylesheet" href="app.css">
-    <link rel="icon" href="/ora.png">
-    <link rel="manifest" href="manifest.json">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ora Editor - Sliding Sidebars</title>
+  <link rel="icon" href="ora.png">
+  <link rel="stylesheet" href="editor.css" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Google Fonts (example) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Raleway:wght@400;700&family=Poppins:wght@400;700&family=Nunito:wght@400;700&family=Oswald:wght@400;700&family=Merriweather:wght@400;700&family=Ubuntu:wght@400;700&family=PT+Sans:wght@400;700&family=Roboto+Condensed:wght@400;700&family=Noto+Sans:wght@400;700&family=Ubuntu+Condensed:wght@400;700&family=Lora:wght@400;700&family=Arimo:wght@400;700&family=Playfair+Display:wght@400;700&family=Noto+Serif:wght@400;700&family=Mulish:wght@400;700&family=Quicksand:wght@400;700&family=Fira+Sans:wght@400;700&family=Work+Sans:wght@400;700&family=Oxygen:wght@400;700&family=Cabin:wght@400;700&family=Exo+2:wght@400;700&family=Inconsolata&family=Rokkitt&family=Libre+Baskerville&family=Karla&family=Josefin+Sans:wght@400;700&family=Bitter:wght@400;700&family=PT+Serif:wght@400;700&family=Hind:wght@400;700&family=Open+Sans+Condensed:wght@300;700&family=Monda:wght@400;700&family=Alegreya:wght@400;700&family=Titillium+Web:wght@400;700&family=Catamaran:wght@400;700&family=Arvo:wght@400;700&family=Spectral:wght@400;700&family=Assistant:wght@400;700&family=Varela+Round&family=Rubik:wght@400;700&family=Heebo:wght@400;700&family=Fira+Code:wght@400;700&family=Anton&family=Barlow:wght@400;700&family=PT+Sans+Narrow:wght@400;700&family=Ubuntu+Mono&family=Archivo:wght@400;700&family=Asap:wght@400;700&family=Cabin+Sketch&family=Crete+Round&family=Pacifico&family=Permanent+Marker&family=Dancing+Script:wght@400;700&family=Satisfy&family=Indie+Flower&family=Patrick+Hand&family=Gloria+Hallelujah&family=Architects+Daughter&family=Reem+Kufi&family=Shrikhand&family=Chewy&family=Baloo&family=Fredoka+One&family=Bungee+Shade&family=Russo+One&family=Prompt&family=Exo&family=Quantico&family=Questrial&family=Cormorant+Garamond&family=EB+Garamond&family=Rasa&family=Chivo&family=Rubik+Mono+One&family=Viga&family=Saira&family=Asap+Condensed&family=Hammersmith+One&family=Glegoo&family=Kumbh+Sans&family=Signika&family=Zilla+Slab&family=Teko&family=Dosis&family=Righteous&family=Barlow+Semi+Condensed&family=Noto+Serif+JP&family=Noto+Sans+JP&family=Sora&family=M+PLUS+Rounded+1c&family=Tinos&family=Cinzel&family=Cuprum&family=Pathway+Gothic+One&family=Manrope&display&family=Bungee&family=Bungee+Shade&family=Bungee+Inline&family=Orbitron:wght@400;700&family=Audiowide&family=Righteous&family=Monoton&family=Cinzel+Decorative:wght@400;700&family=Fontdiner+Swanky&family=Metal+Mania&display=swap">
 </head>
 <body>
-    <div class="editor-container">
-        <div class="editor-header">
-            <div class="logo">
-                <a href="index.html"><img src="/ora.png" alt="Logo" width="60px"></a>
-            </div>
-            <div class="toolbar">
-                <button id="homeButton"><i class="fas fa-home"></i></button>   
-                <button id="saveButton"><i class="fas fa-save"></i></button>           
-                <button onclick="downloadOraFile()"><i class="fas fa-download"></i></button>
-                <button id="openOraFileButton"><i class="fas fa-folder-open"></i></button>
-                <input type="file" id="fileInput" accept=".Ora" style="display: none;">
-            </div>
-        </div>
-        <div class="workspace">
-            <div class="sidebar">
-                <div class="input-btn">
-                    <input type="file" id="uploadMedia" accept="image/*,video/*" onchange="addMedia(event)" hidden>
-                    <label for="uploadMedia" class="upload-icon"><i class="fas fa-upload"></i></label>
-                </div>
-                <h3>Media</h3>
-                <div id="mediaContainer"></div>
-            </div>
-            <div class="content">
-                <div class="format-toolbar">
-                    <button onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
-                    <button onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
-                    <button onclick="formatText('underline')"><i class="fas fa-underline"></i></button>
-                    <button onclick="toggleCase()"><i class="fas fa-text-height"></i></button>
-                    <button id="alignToggle"><i class="fas fa-align-left"></i></button>
-                    <input type="color" id="textColorPicker" onchange="changeTextColor(this.value)">
-                     <!-- Heading Selection Dropdown -->
-                     <select onchange="formatText('heading', this.value)">
-                      <option value="p">Paragraph</option>
-                      <option value="h3">Heading 3</option>
-                      <option value="h2">Heading 2</option>
-                      <option value="h1">Heading 1</option>
-                  </select>
-                  <select onchange="formatText('fontsize', this.value)">
-                      <!-- Options from 0px to 24px -->
-                      <option value="1px">1px</option>
-                      <option value="2px">2px</option>
-                      <option value="3px">3px</option>
-                      <option value="4px">4px</option>
-                      <option value="5px">5px</option>
-                      <option value="6px">6px</option>
-                      <option value="7px">7px</option>
-                      <option value="8px">8px</option>
-                      <option value="9px">9px</option>
-                      <option value="10px">10px</option>
-                      <option value="12px">12px</option>
-                      <option value="14px">14px</option>
-                      <option value="16px" selected>16px</option>
-                      <option value="18px">18px</option>
-                      <option value="20px">20px</option>
-                      <option value="22px">22px</option>
-                      <option value="24px">24px</option>
-                  </select>
-                  <select onchange="formatText('fontname', this.value)">
-                      <option value="Arial">Arial</option>
-                      <option value="Verdana">Verdana</option>
-                      <option value="Times New Roman">Times New Roman</option>
-                      <option value="Courier New">Courier New</option>
-                      <option value="Georgia">Georgia</option>
-                      <option value="Tahoma">Tahoma</option>
-                      <option value="Trebuchet MS">Trebuchet MS</option>
-                      <option value="Impact">Impact</option>
-                      <option value="Comic Sans MS">Comic Sans MS</option>
-                      <option value="Lucida Sans">Lucida Sans</option>
-                      <option value="Palatino Linotype">Palatino Linotype</option>
-                      <option value="Garamond">Garamond</option>
-                      <option value="Bookman Old Style">Bookman Old Style</option>
-                      <option value="Arial Black">Arial Black</option>
-                      <option value="Century Gothic">Century Gothic</option>
-                      <option value="Franklin Gothic Medium">Franklin Gothic Medium</option>
-                      <option value="Calibri">Calibri</option>
-                      <option value="Cambria">Cambria</option>
-                      <option value="Futura">Futura</option>
-                      <option value="Geneva">Geneva</option>
-                      <option value="Rockwell">Rockwell</option>
-                      <option value="Monaco">Monaco</option>
-                      <option value="Copperplate">Copperplate</option>
-                      <option value="Brush Script MT">Brush Script MT</option>
-                      <option value="Baskerville">Baskerville</option>
-                      <option value="Didot">Didot</option>
-                      <option value="Lucida Console">Lucida Console</option>
-                      <option value="Perpetua">Perpetua</option>
-                      <option value="MS Sans Serif">MS Sans Serif</option>
-                      <option value="MS Serif">MS Serif</option>
-                      <option value="Gill Sans">Gill Sans</option>
-                      <option value="Segoe UI">Segoe UI</option>
-                      <option value="Optima">Optima</option>
-                      <option value="Goudy Old Style">Goudy Old Style</option>
-                      <option value="Charcoal">Charcoal</option>
-                      <option value="Zapf Chancery">Zapf Chancery</option>
-                      <option value="Serif">Serif</option>
-                      <option value="Sans-serif">Sans-serif</option>
-                      <option value="Fantasy">Fantasy</option>
-                      <option value="Cursive">Cursive</option>
-                      <option value="Algerian">Algerian</option>
-                      <option value="Berlin Sans FB">Berlin Sans FB</option>
-                      <option value="Broadway">Broadway</option>
-                      <option value="Castellar">Castellar</option>
-                      <option value="Century Schoolbook">Century Schoolbook</option>
-                      <option value="Engravers MT">Engravers MT</option>
-                      <option value="Eras Bold ITC">Eras Bold ITC</option>
-                      <option value="Footlight MT Light">Footlight MT Light</option>
-                      <option value="Harrington">Harrington</option>
-                      <option value="Jokerman">Jokerman</option>
-                      <option value="Kristen ITC">Kristen ITC</option>
-                      <option value="Magneto">Magneto</option>
-                      <option value="Matura MT Script Capitals">Matura MT Script Capitals</option>
-                      <option value="Old English Text MT">Old English Text MT</option>
-                      <option value="Papyrus">Papyrus</option>
-                      <option value="Playbill">Playbill</option>
-                      <option value="Ravie">Ravie</option>
-                      <option value="Showcard Gothic">Showcard Gothic</option>
-                      <option value="Snap ITC">Snap ITC</option>
-                      <option value="Stencil">Stencil</option>
-                      <option value="Viner Hand ITC">Viner Hand ITC</option>
-                      <option value="Vivaldi">Vivaldi</option>
-                      <option value="Vladimir Script">Vladimir Script</option>
-                  </select>
-                </div>
-                <div class="editor" id="editor" contenteditable="true"></div>
-            </div>
-        </div>
+  <div class="editor-container">
+    <!-- MAIN SIDEBAR -->
+    <div id="mainSidebar" class="main-sidebar">
+      <button id="homeBtn" title="Home"><i class="fas fa-home"></i></button>
+      <button id="saveBtn" title="Save"><i class="fas fa-save"></i></button>
+      <button id="mediaBtn" title="Media"><i class="fas fa-photo-video"></i></button>
+      <button id="textBtn" title="Text"><i class="fas fa-font"></i></button>
+      <button onclick="downloadOraFile()"><i class="fas fa-download"></i></button>
+      <button id="openOraFileButton"><i class="fas fa-folder-open"></i></button>
+      <input type="file" id="fileInput" accept=".Ora" style="display: none;">
     </div>
-    <script src="script.js"></script>
-    <script src="home.js"></script>
-    <script src="database.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(() => console.log("Service Worker Registered"));
-        }
-    </script>
-    <script>
-// Save File
-document.getElementById("saveButton").addEventListener("click", function () {
-    const editorContent = document.getElementById("editor").innerHTML;
-    
-    if (!editorContent.trim()) {
-        alert("Cannot save an empty file!");
-        return;
-    }
- 
-    let fileName = localStorage.getItem("currentFile") || prompt("Enter file name:", "example.Ora");
-    if (!fileName) return;
-    if (!fileName.endsWith(".Ora")) fileName += ".Ora";
+    <!-- SECONDARY SIDEBAR -->
+    <div id="secondarySidebar" class="secondary-sidebar">
+      <button class="back-btn" id="closePanel"><i class="fas fa-arrow-left"></i> Back</button>
+      <div id="panelContent" class="panel-content">
+        <!-- Content loaded dynamically -->
+      </div>
+    </div>
+    <!-- EDITOR AREA -->
+    <div class="editor-area">
+      <div class="undo-redo-container">
+        <button class="undo-btn" onclick="undoAction()"><i class="fas fa-undo"></i> Undo</button>
+        <button class="redo-btn" onclick="redoAction()"><i class="fas fa-redo"></i> Redo</button>
+        <button class="cut-btn" onclick="cutText()"><i class="fas fa-cut"></i> Cut</button>
+        <button class="copy-btn" onclick="copyText()"><i class="fas fa-copy"></i> Copy</button>
+        <button class="paste-btn" onclick="pasteText()"><i class="fas fa-paste"></i> Paste</button>
+      </div>
+      <div class="canvas-container">
+        <div id="editor" class="editor-canvas" contenteditable="true">
+          <!-- Editable content goes here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Hidden file input for importing .Ora files -->
+  <input type="file" id="fileInput" accept=".Ora" style="display: none;" />
 
-    // Save file content
-    if (fileName && editorContent) {
-      localStorage.setItem(fileName, editorContent);
-    } else {
-        alert("File name or content is missing!");
-    }
-
-    // Save to recent files list
-    let recents = JSON.parse(localStorage.getItem("recents")) || [];
-    
-    // Remove duplicate entries
-    recents = recents.filter(file => file.name !== fileName);
-    
-    // Add the new file with timestamp
-    recents.push({ name: fileName, timestamp: Date.now() });
-    localStorage.setItem("recents", JSON.stringify(recents));
-
-    alert("File saved successfully!");
-    
-    // Redirect to index.html
-    window.location.href = "index.html";
-});
-
-
-// Download File 
-function downloadOraFile() {
-    const editorContent = document.getElementById("editor").innerHTML;
-    if (!editorContent.trim()) {
-        alert("Cannot download an empty file!");
-        return;
-    }
-
-    let fileName = localStorage.getItem("currentFile") || prompt("Enter file name:", "example.Ora");
-    if (!fileName) return;
-
-    if (!fileName.endsWith(".Ora")) {
-        fileName += ".Ora";
-    }
-
-    const blob = new Blob([editorContent], { type: "application/octet-stream" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
-}
-
-// Load file content when editor.html is opened
-document.addEventListener("DOMContentLoaded", function () {
+  <script>
+    // REFERENCES
+    const mainSidebar = document.getElementById("mainSidebar");
+    const secondarySidebar = document.getElementById("secondarySidebar");
+    const panelContent = document.getElementById("panelContent");
+    const closePanelBtn = document.getElementById("closePanel");
     const editor = document.getElementById("editor");
-    const fileName = localStorage.getItem("currentFile"); // Get file name
 
-    if (!fileName) {
-        alert("No File Is Selected!");
-        return;
-    }
+    // MAIN SIDEBAR BUTTONS
+    const homeBtn = document.getElementById("homeBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const mediaBtn = document.getElementById("mediaBtn");
+    const textBtn = document.getElementById("textBtn");
 
-    const content = localStorage.getItem(fileName); // File content get karo
+    // AUTOSAVE: Every 5 seconds, update content for current file if exists
+    setInterval(() => {
+      const currentFileId = localStorage.getItem("currentFile");
+      if (currentFileId) {
+         localStorage.setItem(currentFileId, editor.innerHTML);
+      } else {
+         localStorage.setItem("autosaveData", editor.innerHTML);
+      }
+    }, 5000);
 
-    if (content !== null) {
-        editor.innerHTML = content; // Editor main content show karo
-    } else {
-        alert("File not found!");
-    }
-});
+    // On page load, load current file content (or autosaveData if no currentFile)
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentFileId = localStorage.getItem("currentFile");
+      if (currentFileId) {
+        const content = localStorage.getItem(currentFileId);
+        if (content !== null) {
+          editor.innerHTML = content;
+        } else {
+          console.warn("No content found for file id:", currentFileId);
+        }
+      } else {
+        const autosave = localStorage.getItem("autosaveData");
+        if (autosave) {
+          editor.innerHTML = autosave;
+        }
+      }
+    });
 
+    // MAIN SIDEBAR ACTIONS
+    homeBtn.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+    saveBtn.addEventListener("click", () => {
+      document.getElementById("saveModal").style.display = "block";
+    });
+    mediaBtn.addEventListener("click", () => {
+      openPanel("media");
+    });
+    textBtn.addEventListener("click", () => {
+      openPanel("text");
+    });
 
+    // SAVE MODAL ACTIONS
+    document.getElementById("saveBtn").addEventListener("click", () => {
+  let currentFileId = localStorage.getItem("currentFile");
+  if (!currentFileId) {
+    alert("No file selected! Please create a new file from the home page.");
+    return;
+  }
+  // Save current editor content under the current file id
+  localStorage.setItem(currentFileId, editor.innerHTML);
 
-// Text Formatting
-function formatText(command, value = null) {
-    document.execCommand(command, false, value);
-}
-
-// Change Text Color
-function changeTextColor(color) {
-    document.execCommand('foreColor', false, color);
-}
-
-// Toggle Uppercase / Lowercase
-function toggleCase() {
-    let selection = window.getSelection().toString();
-    if (selection) {
-        let transformed = selection === selection.toUpperCase() ? selection.toLowerCase() : selection.toUpperCase();
-        document.execCommand('insertText', false, transformed);
-    }
-}
-
-// Drag & Drop Functionality
-const editor = document.getElementById("editor");
-
-editor.ondrop = (event) => {
-    event.preventDefault();
-    let file = event.dataTransfer.files[0];
-    handleFileDrop(file);
-};
-
-editor.ondragover = (event) => {
-    event.preventDefault();
-};
-document.getElementById('homeButton').addEventListener('click', function() {
+  // Optionally update the projects array (for recents) with the new content and update date/time
+  let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+  const now = new Date().toISOString();
+  const projectIndex = projects.findIndex(p => p.id === currentFileId);
+  if (projectIndex >= 0) {
+    projects[projectIndex].content = editor.innerHTML;
+    projects[projectIndex].date = now;
+    localStorage.setItem("projects", JSON.stringify(projects));
+  }
+  alert("File updated successfully!");
+      // Redirect to index.html
     window.location.href = "index.html";
-});
+}); 
+    // SECONDARY SIDEBAR HANDLING
+    function openPanel(type) {
+      mainSidebar.classList.add("hidden");
+      secondarySidebar.style.display = "block";
+      if (type === "media") {
+        panelContent.innerHTML = `
+          <h2>Media</h2>
+          <button class="format-btn" onclick="document.getElementById('fileInputMedia').click()">
+            <i class="fas fa-upload"></i> Upload Media
+          </button>
+          <input type="file" id="fileInputMedia" accept="image/*,video/*" style="display:none;" onchange="addMedia(event)"/>
+          <div>
+            <div id="mediaContainer"></div>
+          </div>
+        `;
+      } else if (type === "text") {
+        panelContent.innerHTML = `
+          <div class="icon1">
+            <button class="format-btn" onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+            <button class="format-btn" onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+            <button class="format-btn" onclick="formatText('underline')"><i class="fas fa-underline"></i></button>
+            <button class="format-btn" onclick="toggleCase()"><i class="fas fa-text-height"></i></button>
+            <button class="format-btn" id="alignToggle" onclick="toggleAlignment()">
+              <i class="fas fa-align-left"></i>
+            </button>
+          </div><hr/>
+          <div class="icon2">
+            <button class="format-btn" onclick="applyTag('H1')">H1</button>
+            <button class="format-btn" onclick="applyTag('H2')">H2</button>
+            <button class="format-btn" onclick="applyTag('H3')">H3</button>
+            <button class="format-btn" onclick="applyTag('P')">P</button>
+          </div><hr/>
+          <div class="">
+            <button class="format-btn" onclick="formatText('fontsize','1px')">1px</button>
+            <button class="format-btn" onclick="formatText('fontsize','8px')">2px</button>
+            <button class="format-btn" onclick="formatText('fontsize','9px')">3px</button>
+            <button class="format-btn" onclick="formatText('fontsize','10px')">4px</button>
+            <button class="format-btn" onclick="formatText('fontsize','12px')">5px</button>
+            <button class="format-btn" onclick="formatText('fontsize','14px')">6px</button>
+            <button class="format-btn" onclick="formatText('fontsize','16px')">6px</button>
+            <button class="format-btn" onclick="formatText('fontsize','18px')">7px</button>
+            <button class="format-btn" onclick="formatText('fontsize','20px')">8px</button>
+            <button class="format-btn" onclick="formatText('fontsize','22px')">9px</button>
+            <button class="format-btn" onclick="formatText('fontsize','24px')">10px</button>
+          </div><hr/>
+          <div style="margin-bottom:10px;">
+            <div id="colorPalette" style="display: flex; flex-wrap: wrap; gap: 2px; margin-top: 2px;"></div>
+          </div><hr/>
+          <div style="margin-bottom:10px;">
+            <div id="fontContainer" style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; max-height:200px; overflow-y:auto;"></div>
+          </div>
+        `;
+        createColorPalette();
+        createFontPalette();
+      }
+    }
+    closePanelBtn.addEventListener("click", () => {
+      secondarySidebar.style.display = "none";
+      mainSidebar.classList.remove("hidden");
+      panelContent.innerHTML = "";
+    });
 
-    // Format Text Code
+    // COLOR PALETTE
+    function createColorPalette() {
+      const colorPaletteDiv = document.getElementById("colorPalette");
+      if (!colorPaletteDiv) return;
+      colorPaletteDiv.innerHTML = "";
+      colorPaletteArr.forEach((color) => {
+        const btn = document.createElement("button");
+        btn.className = "color-swatch";
+        btn.style.backgroundColor = color;
+        btn.addEventListener("click", () => {
+          changeTextColor(color);
+        });
+        colorPaletteDiv.appendChild(btn);
+      });
+    }
+
+    const colorPaletteArr = [
+      "#000000", "#FFFFFF", "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF",
+      "#C0C0C0", "#808080", "#800000", "#808000", "#008000", "#800080", "#008080", "#000080",
+      "#FFA07A", "#DC143C", "#B22222", "#CD5C5C", "#F08080", "#FA8072", "#E9967A",
+      "#FFA500", "#FF4500", "#FFD700", "#DAA520", "#FF8C00", "#B8860B", "#DEB887",
+      "#006400", "#008000", "#32CD32", "#00FF00", "#7FFF00", "#ADFF2F", "#228B22",
+      "#2E8B57", "#66CDAA", "#20B2AA", "#5F9EA0", "#008B8B", "#00CED1",
+      "#4682B4", "#1E90FF", "#4169E1", "#0000CD", "#00008B", "#000080", "#191970",
+      "#87CEFA", "#00BFFF", "#87CEEB", "#6495ED",
+      "#800080", "#8A2BE2", "#9932CC", "#9400D3", "#4B0082", "#6A5ACD", "#7B68EE",
+      "#BA55D3", "#DDA0DD", "#DA70D6", "#C71585", "#FF1493", "#FF69B4", "#FFB6C1",
+      "#8B4513", "#A0522D", "#D2691E", "#CD853F", "#BC8F8F", "#F4A460", "#D2B48C",
+      "#D3D3D3", "#A9A9A9", "#696969", "#778899",
+      "#FFDEAD", "#F5DEB3", "#FAEBD7", "#FFE4B5", "#FFDAB9", "#FFE4C4", "#FFF5EE",
+      "#F5F5DC", "#FDF5E6", "#EEE8AA", "#F0E68C", "#BDB76B", "#FFFACD", "#FAFAD2",
+      "#FFFFE0"
+    ];
+
+    // FONT PALETTE
+    const fontFamilies = [
+      "Roboto", "Open Sans", "Lato", "Montserrat", "Source Sans Pro", "Raleway", "Poppins", "Nunito", "Oswald", "Merriweather",
+      "Ubuntu", "PT Sans", "Roboto Condensed", "Noto Sans", "Ubuntu Condensed", "Lora", "Arimo", "Playfair Display", "Noto Serif", "Mulish",
+      "Quicksand", "Fira Sans", "Work Sans", "Oxygen", "Cabin", "Exo 2", "Inconsolata", "Rokkitt", "Libre Baskerville", "Karla",
+      "Josefin Sans", "Bitter", "PT Serif", "Hind", "Open Sans Condensed", "Monda", "Alegreya", "Titillium Web", "Catamaran", "Arvo",
+      "Spectral", "Assistant", "Varela Round", "Rubik", "Heebo", "Fira Code", "Anton", "Barlow", "PT Sans Narrow", "Ubuntu Mono",
+      "Archivo", "Asap", "Cabin Sketch", "Crete Round", "Pacifico", "Permanent Marker", "Dancing Script", "Satisfy", "Amatic SC", "Indie Flower",
+      "Patrick Hand", "Gloria Hallelujah", "Architects Daughter", "Reem Kufi", "Shrikhand", "Chewy", "Baloo", "Fredoka One", "Bungee Shade", "Russo One",
+      "Prompt", "Exo", "Quantico", "Questrial", "Cormorant Garamond", "EB Garamond", "Rasa", "Chivo", "Rubik Mono One", "Viga",
+      "Saira", "Asap Condensed", "Hammersmith One", "Glegoo", "Kumbh Sans", "Signika", "Zilla Slab", "Teko", "Dosis", "Righteous",
+      "Barlow Semi Condensed", "Noto Serif JP", "Noto Sans JP", "Sora", "M PLUS Rounded 1c", "Tinos", "Cinzel", "Cuprum", "Pathway Gothic One",
+      "Manrope", "Bungee", "Bungee Shade", "Bungee Inline", "Orbitron", "Audiowide", "Righteous", "Monoton", "Cinzel Decorative", "Fontdiner Swanky", "Metal Mania"
+    ];
+    function createFontPalette() {
+      const fontContainer = document.getElementById("fontContainer");
+      if (!fontContainer) return;
+      fontContainer.innerHTML = "";
+      fontFamilies.forEach((font) => {
+        const btn = document.createElement("button");
+        btn.className = "format-btn";
+        btn.textContent = font;
+        btn.style.fontFamily = font;
+        btn.style.fontSize = "14px";
+        btn.style.padding = "8px";
+        btn.style.cursor = "pointer";
+        btn.style.border = "1px solid #ccc";
+        btn.style.borderRadius = "5px";
+        btn.style.background = "#f9f9f9";
+        btn.style.margin = "3px";
+        btn.addEventListener("click", () => {
+          applyFont(font);
+        });
+        fontContainer.appendChild(btn);
+      });
+    }
+    function applyFont(font) {
+      const editor = document.getElementById("editor");
+      if (!editor) return;
+      document.execCommand("fontName", false, font);
+    }
+    createFontPalette();
+    
+    // TEXT FONT SIZE FUNCTIONS
     function formatText(command, value = null) {
-      if (command === 'heading') {
-        // For headings, use execCommand's formatBlock
-        document.execCommand('formatBlock', false, value);
-      } else if (command === 'fontsize') {
-        // Using execCommand for font size can be tricky.
-        // Here we set a default large size and then adjust its inline style.
-        document.execCommand('fontSize', false, "7");
-        let fontElements = document.getElementsByTagName("font");
-        for (let i = 0; i < fontElements.length; i++) {
-          if (fontElements[i].size === "7") {
-            fontElements[i].removeAttribute("size");
-            fontElements[i].style.fontSize = value;
+      if (command === "fontsize") {
+        document.execCommand("fontSize", false, "7");
+        let fonts = document.getElementsByTagName("font");
+        for (let i = 0; i < fonts.length; i++) {
+          if (fonts[i].size == "7") {
+            fonts[i].removeAttribute("size");
+            fonts[i].style.fontSize = value;
           }
         }
-      } else if (command === 'fontname') {
-        document.execCommand('fontName', false, value);
       } else {
         document.execCommand(command, false, value);
       }
     }
-
-    </script>
+    function toggleCase() {
+      let selection = window.getSelection().toString();
+      if (selection) {
+        let transformed = selection === selection.toUpperCase() ? selection.toLowerCase() : selection.toUpperCase();
+        document.execCommand("insertText", false, transformed);
+      }
+    }
+    function changeTextColor(color) {
+      document.execCommand("foreColor", false, color);
+    }
+    function applyTag(tagName) {
+      if (["H1", "H2", "H3", "P", "BLOCKQUOTE", "PRE", "DIV"].includes(tagName)) {
+        document.execCommand("formatBlock", false, tagName);
+      } else if (tagName === "SPAN") {
+        document.execCommand("fontName", false, "inherit");
+      }
+    }
+    let currentAlignment = "left";
+    function toggleAlignment() {
+      if (currentAlignment === "left") {
+        document.execCommand('justifyCenter', false, null);
+        currentAlignment = "center";
+        document.getElementById("alignToggle").innerHTML = '<i class="fas fa-align-center"></i>';
+      } else if (currentAlignment === "center") {
+        document.execCommand('justifyRight', false, null);
+        currentAlignment = "right";
+        document.getElementById("alignToggle").innerHTML = '<i class="fas fa-align-right"></i>';
+      } else {
+        document.execCommand('justifyLeft', false, null);
+        currentAlignment = "left";
+        document.getElementById("alignToggle").innerHTML = '<i class="fas fa-align-left"></i>';
+      }
+    }
+    // MEDIA HANDLING FUNCTIONS
+    const MEDIA_STORAGE_KEY = "mediaItems";
+    function generateId() {
+      return '_' + Math.random().toString(36).substr(2, 9);
+    }
+    function saveMediaItem(item) {
+      let items = JSON.parse(localStorage.getItem(MEDIA_STORAGE_KEY)) || [];
+      items.push(item);
+      localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(items));
+    }
+    function deleteMediaItem(id) {
+      let items = JSON.parse(localStorage.getItem(MEDIA_STORAGE_KEY)) || [];
+      items = items.filter(item => item.id !== id);
+      localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(items));
+    }
+    function loadMediaItems() {
+      let items = JSON.parse(localStorage.getItem(MEDIA_STORAGE_KEY)) || [];
+      const mediaContainer = document.getElementById("mediaContainer");
+      if (!mediaContainer) return;
+      mediaContainer.innerHTML = "";
+      items.forEach(item => {
+        addMediaItemToContainer(item);
+      });
+    }
+    function addMedia(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataURL = e.target.result;
+        const id = generateId();
+        const item = { id, dataURL, type: file.type };
+        saveMediaItem(item);
+        addMediaItemToContainer(item);
+      };
+      reader.readAsDataURL(file);
+    }
+    function addMediaItemToContainer(item) {
+      const mediaContainer = document.getElementById("mediaContainer");
+      if (!mediaContainer) return;
+      const wrapperDiv = document.createElement("div");
+      wrapperDiv.className = "media-item";
+      wrapperDiv.dataset.id = item.id;
+      let mediaElement;
+      if (item.type.startsWith("image/")) {
+        mediaElement = document.createElement("img");
+        mediaElement.src = item.dataURL;
+      } else if (item.type.startsWith("video/")) {
+        mediaElement = document.createElement("video");
+        mediaElement.src = item.dataURL;
+        mediaElement.controls = true;
+      }
+      const controlsDiv = document.createElement("div");
+      controlsDiv.className = "media-controls-overlay";
+      controlsDiv.innerHTML = `
+        <button onclick="insertMediaToEditor('${item.dataURL}', '${item.type}'); event.stopPropagation();"><i class="fas fa-plus"></i></button>
+        <button onclick="deleteMedia('${item.id}'); event.stopPropagation();"><i class="fas fa-trash"></i></button>
+      `;
+      wrapperDiv.appendChild(mediaElement);
+      wrapperDiv.appendChild(controlsDiv);
+      mediaContainer.appendChild(wrapperDiv);
+    }
+    function insertMediaToEditor(dataURL, fileType) {
+      if (fileType.startsWith("image/")) {
+        document.execCommand("insertHTML", false, `<img src="${dataURL}" style="max-width:200px;">`);
+      } else if (fileType.startsWith("video/")) {
+        document.execCommand("insertHTML", false, `<video src="${dataURL}" controls style="max-width:200px;"></video>`);
+      }
+    }
+    function deleteMedia(id) {
+      const mediaContainer = document.getElementById("mediaContainer");
+      const itemDiv = mediaContainer.querySelector(`[data-id="${id}"]`);
+      if (itemDiv) {
+        mediaContainer.removeChild(itemDiv);
+        deleteMediaItem(id);
+      }
+    }
+    window.addEventListener("DOMContentLoaded", loadMediaItems);
+    // Manual Crop Functionality
+    function enableCrop(mediaElement) {
+      const cropOverlay = document.createElement("div");
+      cropOverlay.style.position = "absolute";
+      cropOverlay.style.top = "0";
+      cropOverlay.style.left = "0";
+      cropOverlay.style.width = "100%";
+      cropOverlay.style.height = "100%";
+      cropOverlay.style.background = "rgba(0,0,0,0.2)";
+      cropOverlay.style.cursor = "crosshair";
+      cropOverlay.style.zIndex = "10";
+      mediaElement.parentElement.appendChild(cropOverlay);
+      let startX, startY, cropRect;
+      cropOverlay.addEventListener("mousedown", startCrop);
+      function startCrop(e) {
+        e.preventDefault();
+        startX = e.offsetX;
+        startY = e.offsetY;
+        cropRect = document.createElement("div");
+        cropRect.style.position = "absolute";
+        cropRect.style.border = "2px dashed #fff";
+        cropRect.style.background = "rgba(255,255,255,0.3)";
+        cropRect.style.left = startX + "px";
+        cropRect.style.top = startY + "px";
+        cropOverlay.appendChild(cropRect);
+        cropOverlay.addEventListener("mousemove", duringCrop);
+        cropOverlay.addEventListener("mouseup", endCrop);
+      }
+      function duringCrop(e) {
+        let currentX = e.offsetX;
+        let currentY = e.offsetY;
+        let width = currentX - startX;
+        let height = currentY - startY;
+        cropRect.style.width = Math.abs(width) + "px";
+        cropRect.style.height = Math.abs(height) + "px";
+        cropRect.style.left = (width < 0 ? currentX : startX) + "px";
+        cropRect.style.top = (height < 0 ? currentY : startY) + "px";
+      }
+      function endCrop(e) {
+        cropOverlay.removeEventListener("mousemove", duringCrop);
+        cropOverlay.removeEventListener("mouseup", endCrop);
+        const rect = mediaElement.getBoundingClientRect();
+        const cropRectBounds = cropRect.getBoundingClientRect();
+        let cropLeft = cropRectBounds.left - rect.left;
+        let cropTop = cropRectBounds.top - rect.top;
+        let cropWidth = cropRectBounds.width;
+        let cropHeight = cropRectBounds.height;
+        cropOverlay.parentElement.removeChild(cropOverlay);
+        let right = mediaElement.offsetWidth - (cropLeft + cropWidth);
+        let bottom = mediaElement.offsetHeight - (cropTop + cropHeight);
+        mediaElement.style.clipPath = `inset(${cropTop}px ${right}px ${bottom}px ${cropLeft}px)`;
+      }
+    }
+    // Insert Media into Editor with Overlay Options
+    function insertMediaToEditor(dataURL, fileType) {
+      const editorArea = document.getElementById("editor");
+      const mediaWrapper = document.createElement("div");
+      mediaWrapper.className = "editor-media-wrapper";
+      let mediaElement;
+      if (fileType.startsWith("image/")) {
+        mediaElement = document.createElement("img");
+        mediaElement.src = dataURL;
+      } else if (fileType.startsWith("video/")) {
+        mediaElement = document.createElement("video");
+        mediaElement.src = dataURL;
+        mediaElement.controls = true;
+      }
+      mediaWrapper.appendChild(mediaElement);
+      const overlay = document.createElement("div");
+      overlay.className = "editor-media-overlay";
+      overlay.addEventListener("click", function(e) {
+        if(e.target === overlay) {
+          overlay.style.display = "none";
+        }
+        e.stopPropagation();
+      });
+      const options = [
+        { 
+          name: "Resize", 
+          action: () => {
+            let newWidth = prompt("Enter new width (px):", mediaElement.offsetWidth);
+            let newHeight = prompt("Enter new height (px):", mediaElement.offsetHeight);
+            if(newWidth && newHeight) {
+              mediaElement.style.width = newWidth + "px";
+              mediaElement.style.height = newHeight + "px";
+            }
+          } 
+        },
+        { 
+          name: "Crop", 
+          action: () => {
+            enableCrop(mediaElement);
+            overlay.style.display = "none";
+          } 
+        },
+        { 
+          name: "Replace", 
+          action: () => {
+            let fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = fileType.startsWith("image/") ? "image/*" : "video/*";
+            fileInput.style.display = "none";
+            fileInput.addEventListener("change", function(event) {
+              const file = event.target.files[0];
+              if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                  mediaElement.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+              }
+            });
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            fileInput.addEventListener("change", function(){
+              document.body.removeChild(fileInput);
+            });
+          } 
+        },
+        { 
+          name: "Border Radius", 
+          action: () => {
+            let br = prompt("Enter border radius (px):", "12");
+            if(br !== null) {
+              mediaElement.style.borderRadius = br + "px";
+            }
+          } 
+        },
+        { 
+          name: "Border Color", 
+          action: () => {
+            let color = prompt("Enter border color (CSS color):", "#000000");
+            if(color !== null) {
+              mediaElement.style.border = "2px solid " + color;
+            }
+          } 
+        },
+        { 
+          name: "Delete", 
+          action: () => { 
+            mediaWrapper.remove(); 
+          } 
+        },
+        { 
+          name: "Duplicate", 
+          action: () => {
+            const clone = mediaWrapper.cloneNode(true);
+            editorArea.appendChild(clone);
+          } 
+        }
+      ];
+      options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt.name;
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          opt.action();
+        });
+        overlay.appendChild(btn);
+      });
+      mediaWrapper.appendChild(overlay);
+      mediaWrapper.addEventListener("click", function(e) {
+        if(e.target.tagName.toLowerCase() !== "button") {
+          overlay.style.display = (overlay.style.display === "none" || overlay.style.display === "") ? "flex" : "none";
+        }
+        e.stopPropagation();
+      });
+      editorArea.appendChild(mediaWrapper);
+    }
+    
+    function downloadOraFile() {
+      const editorContent = document.getElementById("editor").innerHTML;
+      if (!editorContent.trim()) {
+        alert("Cannot download an empty file!");
+        return;
+      }
+      let fileName = localStorage.getItem("currentFile") || prompt("Enter file name:", "example.Ora");
+      if (!fileName) return;
+      if (!fileName.endsWith(".Ora")) {
+        fileName += ".Ora";
+      }
+      const blob = new Blob([editorContent], { type: "application/octet-stream" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    }
+    
+    // On load, retrieve content from current file id
+    document.addEventListener("DOMContentLoaded", function () {
+      const editor = document.getElementById("editor");
+      const currentFileId = localStorage.getItem("currentFile");
+      if (!currentFileId) {
+        console.log("No File Is Selected!");
+        return;
+      }
+      const content = localStorage.getItem(currentFileId);
+      if (content !== null) {
+        editor.innerHTML = content;
+      } else {
+        alert("File not found!");
+      }
+    });
+    
+    function openOraFile() {
+      const fileInput = document.getElementById("fileInput");
+      fileInput.click();
+    }
+    
+    document.getElementById("openOraFileButton").addEventListener("click", openOraFile);
+    
+    document.getElementById("fileInput").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        if (!file.name.endsWith('.Ora')) {
+          alert('Please select a valid .Ora file.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = () => {
+          let fileContent = reader.result;
+          console.log("📂 File Content:", fileContent);
+          let data;
+          try {
+            data = JSON.parse(fileContent);
+            console.log("✅ JSON Parsed Successfully:", data);
+          } catch (error) {
+            console.error("❌ JSON Parse Error:", error);
+            console.warn("⚠️ Treating file as plain text.");
+            data = { text: fileContent, media: [] };
+          }
+          document.getElementById("editor").innerHTML = data.text || "";
+          if (data.media) {
+            localStorage.setItem("media", JSON.stringify(data.media));
+            loadMediaItems();
+          }
+        };
+        reader.onerror = (error) => {
+          console.error('Error reading file:', error);
+        };
+      } else {
+        console.error('No file selected');
+      }
+    });
+    
+    function undoAction() {
+      document.execCommand("undo", false, null);
+    }
+    function redoAction() {
+      document.execCommand("redo", false, null);
+    }
+    function cutText() {
+      document.execCommand("cut");
+    }
+    function copyText() {
+      document.execCommand("copy");
+    }
+    function pasteText() {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        navigator.clipboard.readText().then(text => {
+          document.execCommand("insertText", false, text);
+        }).catch(err => {
+          console.error("Clipboard read failed:", err);
+          alert("Paste functionality not supported. Please use your device’s native paste option (tap and hold in the editor).");
+        });
+      } else {
+        alert("Paste functionality not supported in this browser. Please use your device's native paste option.");
+      }
+    }
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+    
+    
+    //loading share file in editor 
+    document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const sharedFileId = params.get("file");
+  if (sharedFileId) {
+    // Set currentFile to the shared file id and load its content
+    localStorage.setItem("currentFile", sharedFileId);
+    const content = localStorage.getItem(sharedFileId);
+    if (content !== null) {
+      document.getElementById("editor").innerHTML = content;
+    } else {
+      alert("File not found! It may not exist in your storage.");
+    }
+  } else {
+    // Otherwise, load autosave data or existing currentFile as before
+    const currentFileId = localStorage.getItem("currentFile");
+    if (currentFileId) {
+      const content = localStorage.getItem(currentFileId);
+      if (content !== null) {
+        document.getElementById("editor").innerHTML = content;
+      }
+    } else {
+      const autosave = localStorage.getItem("autosaveData");
+      if (autosave) {
+        document.getElementById("editor").innerHTML = autosave;
+      }
+    }
+  }
+});
+  </script>
 </body>
 </html>
