@@ -207,7 +207,7 @@ document.getElementById("createFileContinueBtn").addEventListener("click", async
     function saveProjects(projects) {
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
     }
-
+    /* ========= Render Recent Files ========= */
     async function renderRecents() {
       const recentList = document.getElementById("recent-list");
       try {

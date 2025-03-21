@@ -1,0 +1,1 @@
+<i class="fas fa-pen-square" title="Rename" onclick="renameFile('${file.id}')"></i>

@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ora Editor - Sliding Sidebars</title>
+  <title>Ora - Editor</title>
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="editor.css" />
+  <link rel="icon" href="ora.png">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -65,5 +67,13 @@
   <!-- Hidden file input for importing .Ora files -->
   <input type="file" id="fileInput" accept=".Ora" style="display: none;" />
   <script src="editor.js"></script>
+  <script>
+    // Register the service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch(err => console.error('Service Worker Error', err));
+    }
+  </script>
 </body>
 </html>
