@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Preview - Ora Editor</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<style>
+ /* Preview Content Styles */
+.preview-content {
+ max-width: 800px;
+ margin: 80px auto 20px auto;
+ padding: 20px;
+ background-color: #fff;
+ color: #333;
+ border: 1px solid #ccc;
+ border-radius: 5px;
+}
+
+/* Back to Edit Button */
+#backToEdit {
+ position: fixed;
+ top: 20px;
+ left: 20px;
+ padding: 10px 15px;
+ background-color: #dc3545;
+ color: #fff;
+ border: none;
+ border-radius: 3px;
+ cursor: pointer;
+}
+
+#backToEdit:hover {
+ background-color: #c82333;
+}
+</style>
+<body>
+  <!-- Back to Edit Button in top left corner -->
+  <button id="backToEdit" title="Back to Edit"><i class="fas fa-arrow-left"></i> Back to Edit</button>
+  
+  <!-- Preview Content Area -->
+  <div id="previewContent" class="preview-content">
+    <!-- Editor content will be loaded here -->
+  </div>
+  
+  <script>
+    // On page load, get the content from sessionStorage and display it
+    document.addEventListener("DOMContentLoaded", function() {
+      const content = sessionStorage.getItem("previewContent");
+      if (content) {
+        document.getElementById("previewContent").innerHTML = content;
+      } else {
+        document.getElementById("previewContent").innerHTML = "<p>No content available.</p>";
+      }
+    });
+    
+    // Back to Edit button redirects back to the editor page
+    document.getElementById("backToEdit").addEventListener("click", function() {
+      window.location.href = "editor.html";
+    });
+  </script>
+</body>
+</html>

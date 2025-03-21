@@ -50,6 +50,63 @@
     .main-sidebar button:hover {
       color: var(--accent-color);
     }
+    
+.download-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#downloadButton {
+  background: none;
+border: none;
+color: var(--text);
+font-size: 1rem;
+cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 110%; /* Adjust as needed */
+  right: 0;
+  background: var(--secondary);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.dropdown-item {
+  background: var(--secondary);
+  color: var(--text);
+  border: none;
+  padding: 10px 15px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.3s var(--ease-out-quint);
+}
+
+.dropdown-item:hover {
+  background: var(--accent);
+}
+.zoom-controls {
+  display: flex;
+  gap: 10px;
+  margin: 10px;
+}
+
+.zoom-controls button {
+  background: none;
+border: none;
+color: var(--text);
+font-size: 1rem;
+cursor: pointer;
+}
+
+.zoom-controls button:hover {
+  background: var(--accent);
+}
     /* Secondary Sidebar (Hidden by default) */
     .secondary-sidebar {
       width: 130px;
@@ -100,7 +157,43 @@
     .editor-canvas {
       min-height: 100%;
       outline: none;
-    }
+    } 
+
+/* Container styles for pages and Add Page button */
+.pages-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Container for existing pages */
+.pages-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Styling for the Add Page button */
+.add-page-button {
+  width: 21cm;      /* A4 width */
+  height: 29.7cm;   /* A4 height */
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-page-button:hover {
+  background: #f0f0f0;
+}
+
+.add-page-button i {
+  font-size: 3rem;
+  color: #888;
+}
     .hidden {
       display: none !important;
     }
