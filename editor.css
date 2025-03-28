@@ -28,7 +28,7 @@
     }
     /* Main Sidebar with icons */
     .main-sidebar {
-      width: 60px;
+      width: 35px;
       background-color: var(--primary-color);
       color: var(--white);
       display: flex;
@@ -42,13 +42,117 @@
       background: none;
       border: none;
       color: var(--white);
-      font-size: 20px;
-      margin: 15px 0;
+      font-size: 16px;
+      font-weight: lighter;
+      margin: 10px 0;
       cursor: pointer;
       transition: var(--transition);
     }
     .main-sidebar button:hover {
       color: var(--accent-color);
+    }
+    .main-sidebar button p {
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 10px;
+      font-weight: lighter;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .main-sidebar button p1 {
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 8px;
+      font-weight: lighter;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .undo-redo-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f7f7f7;  /* Light background for toolbar */
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+    }
+    
+    /* Common styles for all buttons */
+    .undo-redo-container button {
+      border: none;
+      background: none;
+      color: #333;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.3s;
+    }
+
+    .undo-redo-container button p {
+      border: none;
+      background: none;
+      color: #333;
+      cursor: pointer;
+      padding: 4px;
+      font-size: 10px;
+      transition: color 0.3s;
+    }
+    
+    /* Hover effect for buttons */
+    .undo-redo-container button:hover {
+      color: #007BFF;
+    }
+    
+    /* Left buttons container (aligned left by default) */
+    .left-buttons {
+      display: flex;
+      gap: 5px;
+    }
+    
+    /* Right buttons container (aligned right) */
+    .download-wrapper {
+      display: flex;
+      align-items: center;
+      position: relative;
+      gap: 10px;
+    }
+    
+    /* Dropdown styles */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+    }
+    
+    /* Show dropdown on hover over the download wrapper */
+    .download-wrapper:hover .dropdown {
+      display: block;
+    }
+    
+    /* Style for each dropdown item */
+    .dropdown .dropdown-item {
+      padding: 8px 12px;
+      background-color: #fff;
+      color: #333;
+      white-space: nowrap;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .dropdown .dropdown-item:hover {
+      background-color: #f0f0f0;
     }
     
 .download-wrapper {
@@ -56,7 +160,7 @@
   display: inline-block;
 }
 
-#downloadButton {
+#downloadButton{
   background: none;
 border: none;
 color: var(--text);
@@ -64,6 +168,13 @@ font-size: 1rem;
 cursor: pointer;
 }
 
+#fullscreenBtn{
+  background: none;
+border: none;
+color: var(--text);
+font-size: 1rem;
+cursor: pointer;
+}
 .dropdown {
   position: absolute;
   top: 110%; /* Adjust as needed */
@@ -90,7 +201,7 @@ cursor: pointer;
 .dropdown-item:hover {
   background: var(--accent);
 }
-.zoom-controls {
+/*.zoom-controls {
   display: flex;
   gap: 10px;
   margin: 10px;
@@ -106,7 +217,7 @@ cursor: pointer;
 
 .zoom-controls button:hover {
   background: var(--accent);
-}
+}*/
     /* Secondary Sidebar (Hidden by default) */
     .secondary-sidebar {
       width: 130px;
@@ -159,41 +270,7 @@ cursor: pointer;
       outline: none;
     } 
 
-/* Container styles for pages and Add Page button */
-.pages-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: flex-start;
-}
 
-/* Container for existing pages */
-.pages-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Styling for the Add Page button */
-.add-page-button {
-  width: 21cm;      /* A4 width */
-  height: 29.7cm;   /* A4 height */
-  border: 2px dashed #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.add-page-button:hover {
-  background: #f0f0f0;
-}
-
-.add-page-button i {
-  font-size: 3rem;
-  color: #888;
-}
     .hidden {
       display: none !important;
     }
@@ -315,29 +392,6 @@ cursor: pointer;
     .editor-media-overlay button:hover {
       background: var(--accent-color);
     }
-    /* Save Modal */
-    #saveModal {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--white);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      border-radius: var(--border-radius);
-      z-index: 10;
-    }
-    #saveModal input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-    #saveModal button {
-      padding: 5px 10px;
-      margin-right: 5px;
-      cursor: pointer;
-    }
        .icon1{
      display: flex;
      gap: 2px;
@@ -388,12 +442,21 @@ padding: 0, 4px;
 }
     /* Color swatch buttons */
     .color-swatch {
-      width: 18px;
-      height: 18px;
+      width: 25px;
+      height: 25px;
       border: 1px solid black;;
       border-radius: 50px;
       cursor: pointer;
-      margin: 2px;
+      margin: 0px;
+    }
+    #colorPalette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      margin: 1px;
+      height: 200px;
+      overflow: hidden;
+      overflow-y: auto;
     }
     
     .undo-redo-container {
@@ -401,7 +464,7 @@ padding: 0, 4px;
     gap: 5px;
     margin: 10px;
   }
-  .undo-redo-container button {
+  /*.undo-redo-container button {
     background-color: var(--white);
     border: 1px solid var(--primary-color);
     border-radius: var(--border-radius);
@@ -414,7 +477,7 @@ padding: 0, 4px;
   .undo-redo-container button:hover {
     background-color: var(--accent-color);
     color: var(--white);
-  }
+  }*/
   .editor-canvas {
   -webkit-user-select: none;   /* Disable selection on iOS/Android */
   -webkit-touch-callout: none; /* Disable callout (cut/copy/paste) on iOS */
